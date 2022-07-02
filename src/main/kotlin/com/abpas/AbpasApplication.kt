@@ -4,7 +4,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 
 @SpringBootApplication
-class AbpasApplication
+open class AbpasApplication
 
 fun main(args: Array<String>) {
     runApplication<AbpasApplication>(*args)
