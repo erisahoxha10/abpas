@@ -9,7 +9,7 @@ plugins {
 	kotlin("plugin.jpa") version "1.6.21"
 }
 
-group = "com.abpss"
+group = "com"
 version = "0.0.1-SNAPSHOT"
 java.sourceCompatibility = JavaVersion.VERSION_1_8
 
