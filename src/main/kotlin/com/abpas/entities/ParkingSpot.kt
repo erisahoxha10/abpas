@@ -16,7 +16,7 @@ class ParkingSpot(
     var id: Long? = null,
 
     @Column(name = "state")
-    var state: Integer? = null
+    var state: Int? = null
 
 ) {
 
