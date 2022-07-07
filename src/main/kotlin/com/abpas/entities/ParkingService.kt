@@ -13,28 +13,28 @@ import javax.persistence.Table
 
 @Entity
 @Table(name = "parking_service")
-class ParkingService(
+class ParkingService() {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    var id: Long? = null,
+    var id: Long? = null
 
     @Column(name = "arrival_time")
-    var arrivalTime: Date? = null,
+    var _arrivalTime: Date? = null
 
     @Column(name = "departing_time")
-    var departingTime: Date? = null,
+    var departingTime: Date? = null
 
     @Column(name = "charge")
-    var charge: Boolean? = null,
+    var charge: Boolean? = null
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parking_spot_id")
-    public var parkingUnit: ParkingSpot,
+    var parkingSpot: ParkingSpot? = null
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
-    var user: User
-) {
+    var user: User? = null
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
