@@ -9,16 +9,14 @@ import javax.persistence.Table
 
 @Entity
 @Table(name = "parking_spot")
-class ParkingSpot(
+class ParkingSpot() {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    var id: Long? = null,
+    var id: Long? = null
 
     @Column(name = "state")
     var state: Int? = null
-
-) {
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
