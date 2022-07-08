@@ -15,4 +15,7 @@ interface ParkingSpotRepository : CrudRepository<ParkingSpot, Long> {
     @Transactional
     @Query("update ParkingSpot s set s.state=:state where s.id=:parking_spot_id")
     fun updateSpot(@Param(value = "parking_spot_id") parking_spot_id: Long, @Param(value = "state") state: Int)
+
+    @Query("from ParkingSpot p where p.state=2")
+    fun getInitiativeStates(): List<ParkingSpot>
 }

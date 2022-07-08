@@ -20,13 +20,16 @@ class ParkingService() {
     var id: Long? = null
 
     @Column(name = "arrival_time")
-    var _arrivalTime: Date? = null
+    var arrivalTime: Date? = null
 
     @Column(name = "departing_time")
     var departingTime: Date? = null
 
     @Column(name = "charge")
     var charge: Boolean? = null
+
+    @Column(name = "state")
+    var state: Int? = null
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parking_spot_id")

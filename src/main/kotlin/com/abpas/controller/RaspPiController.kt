@@ -8,6 +8,7 @@ import com.abpas.repositories.UserRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -38,7 +39,15 @@ class RaspPiController(
         var parkingService = ParkingService()
         parkingService.parkingSpot = spotRepository.findByIdOrNull(spotUserDto.parking_spot_id)
         parkingService.user = userRepository.findByIdOrNull(spotUserDto.user_id)
+        parkingService.state = 1
         parkingServiceRepository.save(parkingService)
+    }
+
+    @GetMapping("/raspPi/arrived/{parkingSpotId}")
+    fun arrived(@PathVariable("parkingSpotId") id: Long) {
+        var service = parkingServiceRepository.findAll().filter { it.state == 2 && it.parkingSpot!!.id == id }.get(0)
+        service.state = 3
+        parkingServiceRepository.save(service)
     }
 
 }
