@@ -45,7 +45,7 @@ class RaspPiController(
      * USE CASE 2
      */
     @GetMapping("/getRoboticInitiativeStates")
-    fun getInitiativeStates(): ResponseEntity<ParkingSpotResponseDto> {
+    fun getInitiativeStates(): ParkingSpotResponseDto? {
         var response = ParkingSpotResponseDto()
         try {
             logger.info("Checking if there are initiative states : parkingSpot.state == 2")
@@ -64,21 +64,21 @@ class RaspPiController(
                 logger.info("Service state changed to 2")
                 parkingServiceRepository.save(service)
                 response.parkingSpot = parkingSpot.id
-                return ResponseEntity.ok(response)
+                return response
             } else {
                 logger.info("No parking spots in state 2")
             }
         } catch (e: Exception) {
-            logger.error("An error happened", e.printStackTrace())
+            logger.error("An error happened in /getRoboticInitiativeStates", e.printStackTrace())
         }
-        return ResponseEntity.notFound().build()
+        return null
     }
 
     /**
      * USE CASE 3
      */
     @GetMapping("/arrived/{parkingSpotId}")
-    fun arrived(@PathVariable("parkingSpotId") id: Long): ResponseEntity<Any> {
+    fun arrived(@PathVariable("parkingSpotId") id: Long) {
         try {
             logger.info("Robotic car {} has arrived at the entrance and is signaling this", id)
             logger.info("Looking for the service in state 2 for parking spot {}", id)
@@ -88,21 +88,19 @@ class RaspPiController(
                 var service = serviceList.get(0)
                 service.state = 3
                 parkingServiceRepository.save(service)
-                return ResponseEntity.ok(HttpStatus.OK)
             } else {
                 logger.info("There are no services at state 2 for this parking spot ")
             }
         } catch (e: Exception) {
             logger.error("An error happened : ", e.printStackTrace())
         }
-        return ResponseEntity.notFound().build()
     }
 
     /**
      * USE CASE 5
      */
     @GetMapping("/receive")
-    fun receive(): ResponseEntity<ParkingSpotResponseDto> {
+    fun receive(): ParkingSpotResponseDto? {
         logger.info("The user has loaded the bike so the robotic car can go back to its parking spot")
         var response = ParkingSpotResponseDto()
         try {
@@ -112,14 +110,14 @@ class RaspPiController(
             parkingServiceRepository.save(service)
             response.parkingSpot = service.parkingSpot!!.id
             logger.info("Robotic car is going back to its initial position with a bike!")
+            return response
         } catch (e: Exception) {
             logger.error(
-                "An error happened : could not move robotic car from entrance to its position",
+                "An error happened /receive: could not move robotic car from entrance to its position",
                 e.printStackTrace()
             )
-            return ResponseEntity.notFound().build()
         }
-        return ResponseEntity.ok(response)
+        return null
     }
 
     /**
@@ -146,9 +144,9 @@ class RaspPiController(
      * USE CASE 8
      */
     @GetMapping("/getRetrievingState")
-    fun retrievingState(): ResponseEntity<ParkingSpotResponseDto> {
+    fun retrievingState(): ParkingSpotResponseDto? {
         logger.info("Looking for any request to retrieve bike from users")
-        var respose = ParkingSpotResponseDto()
+        var response = ParkingSpotResponseDto()
         try {
             var service = parkingServiceRepository.findAll().filter {
                 it.state == 7 && it.arrivalTime != null
@@ -156,12 +154,13 @@ class RaspPiController(
             logger.info("Changing state of parking spot {}", service.parkingSpot!!.id)
             service.state = 8
             parkingServiceRepository.save(service)
-            respose.parkingSpot == service.parkingSpot!!.id
+            response.parkingSpot == service.parkingSpot!!.id
+            return response
         } catch (e: Exception) {
-            logger.error("An error happened", e.printStackTrace())
-            return ResponseEntity.notFound().build()
+            logger.error("An error happened /getRetrievingState", e.printStackTrace())
+
         }
-        return ResponseEntity.ok().body(respose)
+        return null
     }
 
     /**
@@ -185,7 +184,7 @@ class RaspPiController(
      * USE CASE 11
      */
     @GetMapping("/return")
-    fun returningBike(): ResponseEntity<ParkingSpotResponseDto> {
+    fun returningBike(): ParkingSpotResponseDto? {
         var response = ParkingSpotResponseDto()
         try {
             logger.info("Robotic car is returning to its initial position")
@@ -194,10 +193,11 @@ class RaspPiController(
             service.state = 11
             parkingServiceRepository.save(service)
             response.parkingSpot = service.parkingSpot!!.id
+            return response
         } catch (e: Exception) {
             logger.error("An error happened, ", e.printStackTrace())
         }
-        return ResponseEntity.ok(response)
+        return null
     }
 
     /**
@@ -237,6 +237,5 @@ class RaspPiController(
         parkingServiceRepository.save(parkingService)
 
     }
-
 
 }
