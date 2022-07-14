@@ -27,6 +27,8 @@ dependencies {
 //	providedRuntime("org.springframework.boot:spring-boot-starter-tomcat")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
+	implementation ("org.apache.logging.log4j:log4j-api:2.18.0")
+	implementation("org.apache.logging.log4j:log4j-core:2.18.0")
 }
 
 tasks.withType<KotlinCompile> {
