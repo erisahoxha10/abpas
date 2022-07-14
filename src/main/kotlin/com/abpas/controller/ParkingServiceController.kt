@@ -2,6 +2,7 @@ package com.abpas.controller
 
 import com.abpas.dto.SpotUserDto
 import com.abpas.entities.ParkingService
+import com.abpas.entities.ParkingSpot
 import com.abpas.repositories.ParkingServiceRepository
 import com.abpas.repositories.ParkingSpotRepository
 import java.util.*
@@ -40,20 +41,30 @@ class ParkingServiceController(
         parkingServiceRepository.save(service)
     }
 
-    @GetMapping("/receive")
-    fun receive(): String {
-        var service = parkingServiceRepository.findAll().filter { it.state == 4 }.get(0)
-        service.state = 5
-        parkingServiceRepository.save(service)
-        return "{\"parkingSpot\":" + service.parkingSpot!!.id + "}"
-    }
+    @PostMapping("/retriveBike")
+    fun retrieveBike(@RequestBody spotUserDto: SpotUserDto) {
+        var service = parkingServiceRepository.findAll().filter {
+            it.user!!.id == spotUserDto.user_id
+                && it.parkingSpot!!.id == spotUserDto.parking_spot_id
+        }.get(0)
 
-    @GetMapping("/finished/{parkingSpot}")
-    fun finishParking(@PathVariable("parkingSpot") id: Long) {
-        var service = parkingServiceRepository.findAll().filter { it.parkingSpot!!.id == id }.get(0)
-        service.state = 6
+        service.state = 7
         parkingServiceRepository.save(service)
 
-        var parkingSpot = parkingSpotRepository.updateSpot(id, 3)
+        parkingSpotRepository.updateSpot(spotUserDto.parking_spot_id, 4)
     }
+
+    @PostMapping("/getBike")
+    fun getBike(@RequestBody spotUserDto: SpotUserDto) {
+        var service = parkingServiceRepository.findAll().filter {
+            it.user!!.id == spotUserDto.user_id
+                && it.parkingSpot!!.id == spotUserDto.parking_spot_id
+        }.get(0)
+
+        service.state = 10
+        parkingServiceRepository.save(service)
+
+        parkingSpotRepository.updateSpot(spotUserDto.parking_spot_id, 4)
+    }
+
 }

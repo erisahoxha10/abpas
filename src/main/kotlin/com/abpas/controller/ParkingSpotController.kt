@@ -26,17 +26,5 @@ class ParkingSpotController(
         return parkingSpotRepository.findAll()
     }
 
-    @GetMapping("/getRoboticInitiativeStates")
-    fun getInitiativeStates(): String {
-        if (!parkingSpotRepository.getInitiativeStates().isEmpty()) {
-            var parkingSpot = parkingSpotRepository.getInitiativeStates().get(0)
-            //change state of last parking service which has this parking  - fix this - it should also check for the parking spot id
-            var service = parkingServiceRepository.findAll().filter { it.state == 1 }.get(0)
-            service.state = 2
-            parkingServiceRepository.save(service)
-            return "{\"parkingSpot\":" + parkingSpot.id + "}"
-        }
-        return ""
-    }
 
 }
