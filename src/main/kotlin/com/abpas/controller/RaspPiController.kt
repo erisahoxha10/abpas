@@ -3,6 +3,7 @@ package com.abpas.controller
 import com.abpas.dto.ParkingSpotResponseDto
 import com.abpas.dto.SpotUserDto
 import com.abpas.entities.ParkingService
+import com.abpas.entities.ParkingSpot
 import com.abpas.repositories.ParkingServiceRepository
 import com.abpas.repositories.ParkingSpotRepository
 import com.abpas.repositories.UserRepository
@@ -224,7 +225,7 @@ class RaspPiController(
     }
 
     @PostMapping("/raspPi/startParking")
-    fun startParking(@RequestBody spotUserDto: SpotUserDto) {
+    fun startParking(@RequestBody spotUserDto: SpotUserDto): ParkingSpot? {
 
         //update the parking_spot to state getting bike or state 2
         spotRepository.updateSpot(spotUserDto.parking_spot_id, 2)
@@ -235,7 +236,7 @@ class RaspPiController(
         parkingService.user = userRepository.findByIdOrNull(spotUserDto.user_id)
         parkingService.state = 1
         parkingServiceRepository.save(parkingService)
-
+        return spotRepository.findByIdOrNull(spotUserDto.parking_spot_id)
     }
 
 }
