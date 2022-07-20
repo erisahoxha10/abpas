@@ -32,7 +32,7 @@ class ParkingServiceController(
     }
 
     @GetMapping("/state3")
-    fun checkBikeArrived(): ParkingSpotResponseDto? {
+    fun checkBikeArrived(): ParkingSpotResponseDto {
         var res = ParkingSpotResponseDto()
         try {
             var service = parkingServiceRepository.findAll().filter {
@@ -45,42 +45,4 @@ class ParkingServiceController(
             return res
         }
     }
-
-    @PostMapping("/finishParking")
-    fun finishParking(@RequestBody spotUserDto: SpotUserDto) {
-        var service = parkingServiceRepository.findAll().filter {
-            it.parkingSpot!!.id == spotUserDto.parking_spot_id
-                && it.user!!.id == spotUserDto.user_id
-        }.get(0)
-        service.state = 4
-        service.arrivalTime = Date()
-        parkingServiceRepository.save(service)
-    }
-
-    @PostMapping("/retriveBike")
-    fun retrieveBike(@RequestBody spotUserDto: SpotUserDto) {
-        var service = parkingServiceRepository.findAll().filter {
-            it.user!!.id == spotUserDto.user_id
-                && it.parkingSpot!!.id == spotUserDto.parking_spot_id
-        }.get(0)
-
-        service.state = 7
-        parkingServiceRepository.save(service)
-
-        parkingSpotRepository.updateSpot(spotUserDto.parking_spot_id, 4)
-    }
-
-    @PostMapping("/getBike")
-    fun getBike(@RequestBody spotUserDto: SpotUserDto) {
-        var service = parkingServiceRepository.findAll().filter {
-            it.user!!.id == spotUserDto.user_id
-                && it.parkingSpot!!.id == spotUserDto.parking_spot_id
-        }.get(0)
-
-        service.state = 10
-        parkingServiceRepository.save(service)
-
-        parkingSpotRepository.updateSpot(spotUserDto.parking_spot_id, 4)
-    }
-
 }
