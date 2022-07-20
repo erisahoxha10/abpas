@@ -33,15 +33,16 @@ class ParkingServiceController(
 
     @GetMapping("/state3")
     fun checkBikeArrived(): ParkingSpotResponseDto? {
+        var res = ParkingSpotResponseDto()
         try {
             var service = parkingServiceRepository.findAll().filter {
                 it.state == 3 && it.arrivalTime == null
             }.get(0)
-            var res = ParkingSpotResponseDto()
             res.parkingSpot = service.parkingSpot?.id
             return res
         } catch (e: Exception) {
-            return null
+            res.parkingSpot = 0
+            return res
         }
     }
 
