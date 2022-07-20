@@ -66,7 +66,7 @@ class RaspPiController(
                 service.state = 3
                 logger.info("Service state changed to 3")
                 parkingServiceRepository.save(service)
-                response.parkingSpot = parkingSpot.id
+                response.serviceId = service.id
                 return response
             } else {
                 logger.info("No parking spots in state 1")
@@ -111,7 +111,7 @@ class RaspPiController(
             var service = parkingServiceRepository.findAll().filter { it.state == 4 && it.arrivalTime != null }.get(0)
             service.state = 5
             parkingServiceRepository.save(service)
-            response.parkingSpot = service.parkingSpot!!.id
+            response.serviceId = service.id
             logger.info("Robotic car is going back to its initial position with a bike!")
             return response
         } catch (e: Exception) {
@@ -157,7 +157,7 @@ class RaspPiController(
             logger.info("Changing state of parking spot {}", service.parkingSpot!!.id)
             service.state = 8
             parkingServiceRepository.save(service)
-            response.parkingSpot == service.parkingSpot!!.id
+            response.serviceId == service.id
             return response
         } catch (e: Exception) {
             logger.error("An error happened /getRetrievingState", e.printStackTrace())
@@ -195,7 +195,7 @@ class RaspPiController(
                 parkingServiceRepository.findAll().filter { it.state == 10 && it.departingTime != null }.get(0)
             service.state = 11
             parkingServiceRepository.save(service)
-            response.parkingSpot = service.parkingSpot!!.id
+            response.serviceId = service.id
             return response
         } catch (e: Exception) {
             logger.error("An error happened, ", e.printStackTrace())

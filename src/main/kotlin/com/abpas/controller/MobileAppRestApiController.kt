@@ -29,9 +29,9 @@ class MobileAppRestApiController(
             service.state = 4
             service.arrivalTime = Date()
             parkingServiceRepository.save(service)
-            res.parkingSpot = service.parkingSpot?.id
+            res.serviceId = service.id
         } catch (e: Exception) {
-            res.parkingSpot = 0
+            res.serviceId = 0
         }
         return res
     }
@@ -49,9 +49,9 @@ class MobileAppRestApiController(
             parkingServiceRepository.save(service)
 
             parkingSpotRepository.updateSpot(spotUserDto.parking_spot_id, 4)
-            res.parkingSpot = service.parkingSpot?.id
+            res.serviceId = service.id
         } catch (e: Exception) {
-            res.parkingSpot = 0
+            res.serviceId = 0
         }
         return res
     }
@@ -71,9 +71,9 @@ class MobileAppRestApiController(
 
             parkingSpotRepository.updateSpot(spotUserDto.parking_spot_id, 4)
 
-            res.parkingSpot = service.parkingSpot?.id
+            res.serviceId = service.id
         } catch (e: Exception) {
-            res.parkingSpot = 0
+            res.serviceId = 0
         }
         return res
     }

@@ -1,14 +1,10 @@
 package com.abpas.controller
 
 import com.abpas.dto.ParkingSpotResponseDto
-import com.abpas.dto.SpotUserDto
 import com.abpas.entities.ParkingService
-import com.abpas.entities.ParkingSpot
 import com.abpas.repositories.ParkingServiceRepository
 import com.abpas.repositories.ParkingSpotRepository
-import java.util.*
 import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -38,10 +34,10 @@ class ParkingServiceController(
             var service = parkingServiceRepository.findAll().filter {
                 it.state == 3 && it.arrivalTime == null
             }.get(0)
-            res.parkingSpot = service.parkingSpot?.id
+            res.serviceId = service.id
             return res
         } catch (e: Exception) {
-            res.parkingSpot = 0
+            res.serviceId = 0
             return res
         }
     }
