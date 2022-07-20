@@ -1,5 +1,6 @@
 package com.abpas.controller
 
+import com.abpas.dto.ParkingSpotResponseDto
 import com.abpas.dto.SpotUserDto
 import com.abpas.entities.ParkingService
 import com.abpas.entities.ParkingSpot
@@ -28,6 +29,20 @@ class ParkingServiceController(
     @GetMapping("/all")
     fun getAll(): MutableIterable<ParkingService> {
         return parkingServiceRepository.findAll()
+    }
+
+    @GetMapping("state3")
+    fun checkBikeArrived(): ParkingSpotResponseDto? {
+        try {
+            var service = parkingServiceRepository.findAll().filter {
+                it.state == 3 && it.arrivalTime == null
+            }.get(0)
+            var res = ParkingSpotResponseDto()
+            res.parkingSpot = service.parkingSpot?.id
+            return res
+        } catch (e: Exception) {
+            return null
+        }
     }
 
     @PostMapping("/finishParking")
