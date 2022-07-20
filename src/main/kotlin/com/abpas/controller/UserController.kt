@@ -23,8 +23,9 @@ class UserController(val userRepository: UserRepository) {
     }
 
     @PostMapping("/create")
-    fun create(@RequestBody user: User) {
-        userRepository.save(user)
+    fun create(@RequestBody user: User): User {
+        val newUser = userRepository.save(user)
+        return newUser
     }
 
     @GetMapping("/all")
