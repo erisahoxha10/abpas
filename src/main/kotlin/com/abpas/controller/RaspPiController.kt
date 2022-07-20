@@ -1,23 +1,12 @@
 package com.abpas.controller
 
 import com.abpas.dto.ParkingSpotResponseDto
-import com.abpas.dto.SpotUserDto
-import com.abpas.entities.ParkingService
-import com.abpas.entities.ParkingSpot
 import com.abpas.repositories.ParkingServiceRepository
 import com.abpas.repositories.ParkingSpotRepository
 import com.abpas.repositories.UserRepository
-import kotlin.math.log
 import org.slf4j.LoggerFactory
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.data.repository.findByIdOrNull
-import org.springframework.http.HttpEntity
-import org.springframework.http.HttpStatus
-import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
@@ -109,10 +98,17 @@ class RaspPiController(
         try {
             logger.info("Looking for the robotic car for which the user has finished parking")
             var service = parkingServiceRepository.findAll().filter { it.state == 4 && it.arrivalTime != null }.get(0)
-            service.state = 5
+//            service.state = 5
+//            Service state becomes 6 as John cannot use the other use case 6
+            service.state = 6
             parkingServiceRepository.save(service)
             response.serviceId = service.id
             logger.info("Robotic car is going back to its initial position with a bike!")
+
+//          Update the parking spot to busy
+            var spot = service.parkingSpot!!.id
+            spotRepository.updateSpot(spot!!, 3)
+
             return response
         } catch (e: Exception) {
             logger.error(
