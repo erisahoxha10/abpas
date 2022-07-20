@@ -41,4 +41,19 @@ class ParkingServiceController(
             return res
         }
     }
+
+    @GetMapping("/state6")
+    fun checkBikeInSpot(): ParkingSpotResponseDto {
+        var res = ParkingSpotResponseDto()
+        try {
+            var service = parkingServiceRepository.findAll().filter {
+                it.state == 6 && it.arrivalTime != null && it.departingTime == null
+            }.get(0)
+            res.serviceId = service.id
+            return res
+        } catch (e: Exception) {
+            res.serviceId = 0
+            return res
+        }
+    }
 }
