@@ -226,19 +226,4 @@ class RaspPiController(
         }
     }
 
-    @PostMapping("/raspPi/startParking")
-    fun startParking(@RequestBody spotUserDto: SpotUserDto): ParkingSpot? {
-
-        //update the parking_spot to state getting bike or state 2
-        spotRepository.updateSpot(spotUserDto.parking_spot_id, 2)
-
-        //create a new record in parking service
-        var parkingService = ParkingService()
-        parkingService.parkingSpot = spotRepository.findByIdOrNull(spotUserDto.parking_spot_id)
-        parkingService.user = userRepository.findByIdOrNull(spotUserDto.user_id)
-        parkingService.state = 1
-        parkingServiceRepository.save(parkingService)
-        return spotRepository.findByIdOrNull(spotUserDto.parking_spot_id)
-    }
-
 }
