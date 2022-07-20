@@ -31,7 +31,7 @@ class ParkingServiceController(
         return parkingServiceRepository.findAll()
     }
 
-    @GetMapping("state3")
+    @GetMapping("/state3")
     fun checkBikeArrived(): ParkingSpotResponseDto? {
         try {
             var service = parkingServiceRepository.findAll().filter {
