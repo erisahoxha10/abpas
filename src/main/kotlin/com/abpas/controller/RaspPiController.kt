@@ -61,13 +61,15 @@ class RaspPiController(
                     .filter { it.state == 1 && it.parkingSpot!!.id == parkingSpot!!.id && it.arrivalTime == null }
                     .get(0)
                 logger.info("Found service record {}", service.id)
-                service.state = 2
-                logger.info("Service state changed to 2")
+//                service.state = 2
+//                Service state should change to 3 as John said that he could not use the use case 3
+                service.state = 3
+                logger.info("Service state changed to 3")
                 parkingServiceRepository.save(service)
                 response.parkingSpot = parkingSpot.id
                 return response
             } else {
-                logger.info("No parking spots in state 2")
+                logger.info("No parking spots in state 1")
             }
         } catch (e: Exception) {
             logger.error("An error happened in /getRoboticInitiativeStates", e.printStackTrace())
